@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dstevens.config.Authorization;
+import com.dstevens.config.ElysiumUserDetailsService;
 import com.dstevens.config.controllers.ForbiddenException;
-import com.dstevens.user.ElysiumUserDetailsService;
 import com.google.gson.Gson;
 
 @Controller
@@ -33,7 +33,6 @@ public class AuthenticationController {
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	public @ResponseBody String authenticate(@RequestBody AuthorizationRequest request) {
 		UserDetails userDetails = userService.loadUserByUsername(request.username);
-		System.out.println(passwordEncoder.get().encode(request.password));
 		if(userDetails.getUsername().equals(request.username) &&
 		   passwordEncoder.get().matches(request.password, userDetails.getPassword())) {
 			Authorization authorize = userService.authorize(new UsernamePasswordAuthenticationToken(request.username, request.password, userDetails.getAuthorities()));

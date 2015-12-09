@@ -8,14 +8,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.dstevens.config.controllers.ForbiddenException;
-import com.dstevens.user.ElysiumUserDetailsService;
 
 import static com.dstevens.config.AuthorizationReader.authorizationIn;
 
 @Component
 public class AuthorizationGuard extends HandlerInterceptorAdapter {
 
-	private ElysiumUserDetailsService userService;
+	private final ElysiumUserDetailsService userService;
 
 	@Autowired
 	public AuthorizationGuard(ElysiumUserDetailsService userService) {
@@ -28,6 +27,11 @@ public class AuthorizationGuard extends HandlerInterceptorAdapter {
 		if(authorization == null) {
 			System.out.println("No authorization found");
 			throw new ForbiddenException("Request not authorized");
+		}
+		if(request.getRequestURI().equalsIgnoreCase("/requestPasswordReset") ||
+		   request.getRequestURI().equalsIgnoreCase("/passwordResetRequested") ||
+		   request.getRequestURI().equalsIgnoreCase("/resetPassword")) {
+			return true;
 		}
 		if(!userService.isUserAuthorized(authorization)) {
 			System.out.println("Authorization failed");

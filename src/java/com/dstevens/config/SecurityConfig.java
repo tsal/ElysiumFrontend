@@ -13,8 +13,6 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import com.dstevens.user.ElysiumUserDetailsService;
  
 @Configuration
 @EnableWebSecurity
@@ -43,6 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	    	 formLogin().loginPage("/login").successHandler(successHandler).failureHandler(failureHandler).permitAll().and().
 	    	 logout().logoutUrl("/logout").addLogoutHandler(logoutHandler). permitAll().and().
 	    	 addFilterBefore(hydrateUserFilter, UsernamePasswordAuthenticationFilter.class).
+	    	 authorizeRequests().antMatchers("/requestPasswordReset", "/passwordResetRequested").permitAll().and().
 	    	 authorizeRequests().antMatchers("/admin/**", "/admin**").hasAnyRole("ADMIN").and().
 		     csrf().disable(); 
  

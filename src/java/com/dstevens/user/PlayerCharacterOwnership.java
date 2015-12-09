@@ -33,16 +33,16 @@ import static com.dstevens.collections.Lists.sort;
 @Entity
 @Table(name="PlayerCharacterOwnership")
 public class PlayerCharacterOwnership {
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "tableGen")
-	@TableGenerator(name = "tableGen", pkColumnValue = "user", table="ID_Sequences", allocationSize=1 )
+	@TableGenerator(name = "tableGen", pkColumnValue = "pc_ownership", table="ID_Sequences", allocationSize=1 )
 	@Column(name="id", nullable=false, unique=true)
     private final Integer id;
 	
 	@ManyToOne
-	@JoinColumn(name="user_id", referencedColumnName="id")
-    @ForeignKey(name="PlayerCharacterOwnership_User_FK", inverseName="User_PlayerCharacterOwnership_FK")
+	@JoinColumn(name="user")
+	@ForeignKey(name="PlayerCharacterOwnership_User_FK", inverseName="User_PlayerCharacterOwnership_FK")
 	private final User user;
 	
 	@OneToOne
@@ -56,6 +56,7 @@ public class PlayerCharacterOwnership {
 	@ElementCollection
 	@JoinColumn(name="playerCharacterOwnership_id", referencedColumnName="id")
     @OrderColumn(name="order_by")
+	@ForeignKey(name="PlayerCharacterOwnership_PlayerStatusChange_FK", inverseName="PlayerStatusChange_PlayerCharacterOwnership_FK")
 	private final List<PlayerStatusChange> statusChanges;
 	
 	//Hibernate only
@@ -80,7 +81,7 @@ public class PlayerCharacterOwnership {
 	public Integer getId() {
 		return id;
 	}
-
+	
 	public User getUser() {
 		return user;
 	}

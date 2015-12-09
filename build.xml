@@ -62,12 +62,33 @@
     <copy file="app.properties.template" tofile="${src.dir}/app.properties">
         <filterchain>
                <replacetokens>
+                   <token key="SERVER_HOST"   value="${s.SERVER_HOST}"/>
+                   
                    <token key="DB_DRIVER"   value="${s.DB_DRIVER}"/>
                    <token key="DB_HOST"     value="${s.DB_HOST}"/>
                    <token key="DB_NAME"     value="${s.DB_NAME}"/>
                    <token key="DB_PORT"     value="${s.DB_PORT}"/>
                    <token key="DB_USER"     value="${s.DB_USER}"/>
                    <token key="DB_PASSWORD" value="${s.DB_PASSWORD}"/>
+                   
+                   <token key="PAYPAL_URL"        value="${s.PAYPAL_URL}"/>
+                   <token key="PAYPAL_APIURL"     value="${s.PAYPAL_APIURL}"/>
+                   <token key="PAYPAL_USER"       value="${s.PAYPAL_USER}"/>
+                   <token key="PAYPAL_PASSWORD"   value="${s.PAYPAL_PASSWORD}"/>
+                   <token key="PAYPAL_SIGNATURE"  value="${s.PAYPAL_SIGNATURE}"/>
+                   <token key="PAYPAL_VERSION"    value="${s.PAYPAL_VERSION}"/>
+                   <token key="PAYPAL_RETURNHOST" value="${s.PAYPAL_RETURNHOST}"/>
+                   
+                   <token key="MAIL_ENABLED"  value="${s.MAIL_ENABLED}"/>
+                   <token key="MAIL_HOST"     value="${s.MAIL_HOST}"/>
+                   <token key="MAIL_PORT"     value="${s.MAIL_PORT}"/>
+                   <token key="MAIL_USER"     value="${s.MAIL_USER}"/>
+                   <token key="MAIL_PASSWORD" value="${s.MAIL_PASSWORD}"/>
+                   
+                   <token key="PATRONAGE_DONATION" value="${s.PATRONAGE_DONATION}"/>
+                   <token key="APP_NAME" value="${s.APP_NAME}"/>
+                   <token key="APP_ORGANZATION" value="${s.APP_ORGANZATION}"/>
+                   <token key="APP_ORG_URL" value="${s.APP_ORG_URL}"/>
                </replacetokens>
         </filterchain>
     </copy>

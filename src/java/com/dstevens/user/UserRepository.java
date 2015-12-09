@@ -1,19 +1,31 @@
 package com.dstevens.user;
 
+import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
+
+import com.dstevens.user.guards.UserCreationGuard;
+import com.dstevens.user.guards.UserInvalidException;
+
+import static com.dstevens.collections.Sets.set;
 
 @Repository
 public class UserRepository {
 
-	private UserDao dao;
+	private final UserDao dao;
+	private final Supplier<PasswordEncoder> passwordEncoderSupplier;
+	private final List<UserCreationGuard> guards;
 
 	@Autowired
-	public UserRepository(UserDao dao) {
+	public UserRepository(UserDao dao, Supplier<PasswordEncoder> passwordEncoderSupplier, List<UserCreationGuard> guards) {
 		this.dao = dao;
+		this.passwordEncoderSupplier = passwordEncoderSupplier;
+		this.guards = guards;
 	}
 
 	public Iterable<User> findAllUndeleted() {
@@ -43,6 +55,13 @@ public class UserRepository {
 		return dao.save(user);
 	}
 	
-	
-	
+	public User create(String email, String password, String firstName, String lastName) throws UserInvalidException {
+		User user = new User(email, passwordEncoderSupplier.get().encode(password), set(Role.USER)).withFirstName(firstName).withLastName(lastName);
+		
+		for (UserCreationGuard guard : guards) {
+			guard.validate(user);
+		}
+		
+		return save(user);
+	}
 }
